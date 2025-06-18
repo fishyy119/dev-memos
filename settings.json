@@ -1,0 +1,24 @@
+{
+    //* 使用插件`saveAndRun`在保存py文件时自动进行整理（格式化与import顺序），需要使用pip安装两个库
+    "saveAndRun": {
+        "commands": [
+            {
+                "match": "\\.py$",
+                // "cmd": "/home/yyy/miniconda3/envs/liber/bin/black ${file} --line-length 144",
+                "cmd": "/home/yyy/miniconda3/envs/liber/bin/isort ${file} && /home/yyy/miniconda3/envs/liber/bin/black ${file} --line-length 144",
+                "silent": true
+            }
+        ]
+    },
+    //* vscode的black插件配置自动格式化
+    "black-formatter.importStrategy": "fromEnvironment", // 优先在环境中寻找black而不是插件自带的（不过还是没搞明白如何格式化高版本已经不支持的python）
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "black-formatter.args": [
+        "--line-length",
+        "120"
+    ]
+}
