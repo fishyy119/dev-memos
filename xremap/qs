@@ -1,0 +1,17 @@
+#!/bin/bash
+
+SESSION_NAME=xremap
+XRMAP_CMD="/home/yyy/Programs/xremap/xremap /home/yyy/Programs/xremap/config.yml"
+LOGFILE="/tmp/${SESSION_NAME}.log"
+
+#* 1.检查是否已有同名会话，如果有就关闭
+if screen -list | grep -q "\.${SESSION_NAME}"; then
+    echo "Existing session '$SESSION_NAME' found. Terminating..."
+    screen -S "$SESSION_NAME" -X quit
+    sleep 1
+fi
+
+#* 2.启动新的 xremap 会话
+echo "Starting new session '$SESSION_NAME'..."
+screen -L -Logfile "$LOGFILE" -dmS "$SESSION_NAME" $XRMAP_CMD
+tail -n 50 "$LOGFILE"

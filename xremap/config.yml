@@ -1,0 +1,15 @@
+keymap:
+  - name: Move
+    application:
+      not: a
+    remap:
+      ALT-j: left
+      ALT-l: right
+      ALT-i: up
+      ALT-k: down
+  
+  # 本来希望能够在deskflow传送操作到windows时能生效，但是不行
+  # - name: Mouse side button
+  #   remap:
+  #     BTN_BACK: Alt-left
+  #     BTN_FORWARD: Alt-right
