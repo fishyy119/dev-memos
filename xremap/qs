@@ -1,17 +1,43 @@
 #!/bin/bash
+set -euo pipefail
 
 SESSION_NAME=xremap
 XRMAP_CMD="/home/yyy/Programs/xremap/xremap /home/yyy/Programs/xremap/config.yml"
 LOGFILE="/tmp/${SESSION_NAME}.log"
 
-#* 1.检查是否已有同名会话，如果有就关闭
-if screen -list | grep -q "\.${SESSION_NAME}"; then
-    echo "Existing session '$SESSION_NAME' found. Terminating..."
-    screen -S "$SESSION_NAME" -X quit
-    sleep 1
-fi
+MODE="${1:-start}"  # 默认 start
 
-#* 2.启动新的 xremap 会话
-echo "Starting new session '$SESSION_NAME'..."
-screen -L -Logfile "$LOGFILE" -dmS "$SESSION_NAME" $XRMAP_CMD
-tail -n 50 "$LOGFILE"
+has_session() {
+    screen -list | grep -q "\.${SESSION_NAME}"
+}
+
+stop_session() {
+    if has_session; then
+        echo "Stopping session '$SESSION_NAME'..."
+        screen -S "$SESSION_NAME" -X quit
+        sleep 1
+    else
+        echo "No existing session '$SESSION_NAME' found."
+    fi
+}
+
+start_session() {
+    echo "Starting new session '$SESSION_NAME'..."
+    screen -L -Logfile "$LOGFILE" -dmS "$SESSION_NAME" $XRMAP_CMD
+    sleep 1
+    tail -n 50 "$LOGFILE"
+}
+
+case "$MODE" in
+    stop|--stop|-s)
+        stop_session
+        ;;
+    start|--start)
+        stop_session
+        start_session
+        ;;
+    *)
+        echo "Usage: $0 [start|stop]"
+        exit 1
+        ;;
+esac

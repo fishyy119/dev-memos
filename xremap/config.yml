@@ -9,6 +9,7 @@ keymap:
       ALT-k: down
   
   # 本来希望能够在deskflow传送操作到windows时能生效，但是不行
+  # 最终直接将鼠标侧键配置为alt-left/right了
   # - name: Mouse side button
   #   remap:
   #     BTN_BACK: Alt-left
